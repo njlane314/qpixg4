@@ -19,7 +19,7 @@
 #include <G4UIExecutive.hh>
 #include <FTFP_BERT_HP.hh>
 #include <G4EmStandardPhysics_option4.hh>
-
+#include <G4StepLimiterPhysics.hh>
 
 #include "Randomize.hh"
 #include "time.h"
@@ -47,6 +47,12 @@ int main(int argc, char** argv)
   G4RunManager* run_manager = new G4RunManager();
 
   G4VModularPhysicsList* physics_list = new FTFP_BERT_HP();
+  
+  // Register step limit physics
+  G4StepLimiterPhysics* step_limit_phys = new G4StepLimiterPhysics();
+  step_limit_phys->SetApplyToAll(true);
+  physics_list->RegisterPhysics(step_limit_phys);
+  
   physics_list->ReplacePhysics(new G4EmStandardPhysics_option4());
   run_manager->SetUserInitialization(physics_list);
 
