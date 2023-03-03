@@ -17,6 +17,7 @@
 #include "G4VisAttributes.hh"
 #include "G4SDManager.hh"
 #include "G4LogicalVolumeStore.hh"
+#include "G4UserLimits.hh"
 
 
 DetectorConstruction::DetectorConstruction(): G4VUserDetectorConstruction()
@@ -55,6 +56,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   G4LogicalVolume* detector_logic_vol =
     new G4LogicalVolume(detector_solid_vol, detector_mat, "detector.logical");
+  
+  G4UserLimits* user_limits = new G4UserLimits();
+  user_limits->SetMaxAllowedStep(0.1*mm) // less than pixel resolution
+  detector_logic_vol->SetUserLimits(user_limits);
 
   G4ThreeVector offset(detector_width/2., detector_height/2., detector_length/2.);
 
